@@ -35,9 +35,13 @@ const int lowNote = 36;
 void setup() {
 for(int i = 0; i<numServos; i++){
 servonum[i]=i;
+
+servoMin[i] = 200;
+servoMax[i] = 500;
+
 }
 
-//populate servo min & max vals
+//populate servo min & max vals -- add a pair for each servo.
 
 servoMin[0] = 200;
 servoMax[0] = 500;
