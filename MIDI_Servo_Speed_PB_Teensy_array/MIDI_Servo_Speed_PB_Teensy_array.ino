@@ -6,8 +6,6 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 //#include <MIDI.h>
 
-#define SERVOMIN1 200 // this is the 'minimum' pulse length count (out of 4096)
-#define SERVOMAX1 500 // this is the 'maximum' pulse length count (out of 4096)
 
 static const unsigned ledPin = 13;      // LED pin on Arduino Uno
 
@@ -24,6 +22,9 @@ float servoSpeed=100;
 int maxSpeed = 1000;
 int minSpeed =100;
 
+int servoMin[numServos];  // this is the 'minimum' pulse length count (out of 4096)
+int servoMax[numServos];  // this is the 'maximum' pulse length count (out of 4096)
+
 
 // our servo # counter
 uint8_t servonum[numServos];
@@ -34,11 +35,19 @@ const int lowNote = 36;
 void setup() {
 for(int i = 0; i<numServos; i++){
 servonum[i]=i;
-
-
 }
- pwm.begin();
-  pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
+
+//populate servo min & max vals
+
+servoMin[0] = 200;
+servoMax[0] = 500;
+
+servoMin[1] = 200;
+servoMax[1] = 500;
+
+
+pwm.begin();
+pwm.setPWMFreq(60);  // Analog servos run at ~60 Hz updates
 pinMode(ledPin, OUTPUT);
 
   
@@ -272,7 +281,7 @@ void moveServo(byte channel, byte note, byte velocity){
 
     for(int i = 0; i<numServos; i++){
       if(note==lowNote+i){
-    angle[i] = map(velocity, 0, 127, SERVOMIN1, SERVOMAX1); //map velocity to angle
+    angle[i] = map(velocity, 0, 127, servoMin[i], servoMax[i]); //map velocity to angle
    //pwm.setPWM(servonum[i[, 0, angle[i]); //write our angle to the servo
    servoTpos[i]=angle[i];
       }
